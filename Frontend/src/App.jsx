@@ -35,6 +35,7 @@ import Account from "./pages/Account";
 import Success from "./pages/Success";
 import Cancle from "./pages/Cancle";
 import BasicInfo from "./pages/BasicInfo";
+import Notification from "./components/notifications/Notification";
 const App = () => {
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
@@ -65,7 +66,7 @@ const App = () => {
               <Route path="/dashboard" element={<Home />} />
               <Route path="/dashboard/employee" element={<Employes />} />
               <Route path="/dashboard/category" element={<Category />} />
-
+              <Route path="/dashboard/notifications" element={<Notification />} />
               <Route path="/dashboard/add-class" element={<AddClasses />} />
               <Route path="/dashboard/classes" element={<Class />} />
               <Route path="/dashboard/edit_class/:id" element={<EditClass />} />

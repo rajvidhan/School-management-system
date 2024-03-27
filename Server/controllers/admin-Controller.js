@@ -2,12 +2,11 @@ import connection from "../utils/dbConnection.js";
 
 import bcrypt from "bcrypt";
 
-
 import XLSX from "xlsx"; // For Excel export
 import stripeLib from "stripe";
 // Set up Stripe
 const stripe = new stripeLib(
-`sk_test_51Ow99DSJsV29GjKs8pNroJjD0lwwoEKXqRk9KfCht4ch5k4rsmv30oFqRQVDOGPCVp4zgxTcHU3yiODPJmMgBkr900KhrvXKM3`
+  `sk_test_51Ow99DSJsV29GjKs8pNroJjD0lwwoEKXqRk9KfCht4ch5k4rsmv30oFqRQVDOGPCVp4zgxTcHU3yiODPJmMgBkr900KhrvXKM3`
 );
 
 export const addworkerCategory = (req, res) => {
@@ -303,21 +302,20 @@ export const EmPresentinMonth = async (req, res) => {
 
 export const Payments = async (req, res) => {
   const customer = await stripe.customers.create({
-    email: 'vidhangour20@gmail.com',
-    name: 'hari',
+    email: "vidhangour20@gmail.com",
+    name: "hari",
     address: {
-      line1: 'Rajasthan',
-      city: 'Jaipur',
-      postal_code: '303348',
-      country: 'US', // ISO 3166-1 alpha-2 country code
+      line1: "Rajasthan",
+      city: "Jaipur",
+      postal_code: "303348",
+      country: "US", // ISO 3166-1 alpha-2 country code
     },
   });
-  ;
   const payment = req.body.payment;
   const lineItems = [
     {
       price_data: {
-        currency:"inr",
+        currency: "inr",
         product_data: {
           name: "Lochan",
         },
@@ -333,19 +331,17 @@ export const Payments = async (req, res) => {
     mode: "payment",
     success_url: "http://localhost:5173/dashboard/accounts",
     cancel_url: "http://localhost:5173/cancle",
-    billing_address_collection: 'auto', // Require billing address from customer
+    billing_address_collection: "auto", // Require billing address from customer
     customer: customer.id, // Pass the customer name directly
- 
   });
 
   return res.json({ id: session.id });
 };
 
-export const insetPayDetails = async (req,res)=>{
-
-const sql = `INSERT INTO salarydetails 
+export const insetPayDetails = async (req, res) => {
+  const sql = `INSERT INTO salarydetails 
 (salaryholder,salarygivenby,date,month,year,howmuch,salary,present,paymentstatus,salaryholderemail)
-VALUES (?)`
+VALUES (?)`;
 
   const values = [
     req.body.salaryholder,
@@ -357,52 +353,123 @@ VALUES (?)`
     req.body.salary,
     req.body.present,
     req.body.paymentstatus,
-    req.body.salaryholderemail
+    req.body.salaryholderemail,
   ];
 
-  connection.query(sql,[values],(err,result)=>{
-    if(err){
-      console.log(err)
-    }else{
+  connection.query(sql, [values], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
       return res.json({
-        message:"success",
-        success:true,
-      data:result      })
+        message: "success",
+        success: true,
+        data: result,
+      });
     }
-  })
-  
-}
+  });
+};
 
-export const paymentDetails = async (req,res)=>{
+export const paymentDetails = async (req, res) => {
   const year = req.params.paymentdetailYear;
 
   const sql = `SELECT * FROM salarydetails WHERE year = ?`;
 
-  connection.query(sql,[year],(err,result)=>{
-    if(err){
-      console.log(err)
-    }else{
-      return res.json({
-        data:result,
-        message:"success",
-        success:true
-      })
-    }
-  })
-}
-
-export const emdetails = async (req,res)=>{
-  const sql = ` SELECT * FROM employee WHERE email = ?`
-const email  = req.params.email;
-  connection.query(sql,[email],(err,result)=>{
-    if(err){
+  connection.query(sql, [year], (err, result) => {
+    if (err) {
       console.log(err);
-    }else{
+    } else {
       return res.json({
-        data:result,
-        message:"Successfully fetched",
-        success:true
-      })
+        data: result,
+        message: "success",
+        success: true,
+      });
     }
-  })
-}
+  });
+};
+export const patmentDetailsforem = async (req, res) => {
+  const year = req.params.year;
+  const name = req.params.name;
+  console.log(year, name);
+  const sql = `SELECT * FROM salarydetails WHERE year = ? AND salaryholder = ?`;
+
+  connection.query(sql, [year, name], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      return res.json({
+        data: result,
+        message: "success",
+        success: true,
+      });
+    }
+  });
+};
+
+export const emdetails = async (req, res) => {
+  const sql = ` SELECT * FROM employee WHERE email = ?`;
+  const email = req.params.email;
+  connection.query(sql, [email], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      return res.json({
+        data: result,
+        message: "Successfully fetched",
+        success: true,
+      });
+    }
+  });
+};
+
+export const postnotification = async (req, res) => {
+  const sql = `insert into urgentnotifications
+ (email,description,subject,forwho)
+ values (?)`;
+
+  const values = [req.body.email, req.body.des, req.body.sub, req.body.for];
+
+  connection.query(sql, [values], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.json({
+        message: "fail",
+      });
+    } else {
+      return res.json({
+        message: "success",
+        success: true,
+      });
+    }
+  });
+};
+
+export const allnotifications = async (req, res) => {
+  const sql = `select * from urgentnotifications`;
+
+  connection.query(sql, null, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      return res.json({
+        data: result,
+        message: "success",
+        success: true,
+      });
+    }
+  });
+};
+
+export const deleteNoti = async (req, res) => {
+  const sql = `delete from urgentnotifications where description =?`;
+
+  connection.query(sql, [req.params.data], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      return res.json({
+        message: "success",
+        success: true,
+      });
+    }
+  });
+};

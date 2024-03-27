@@ -1,5 +1,5 @@
 import express from "express"
-import { AddPresent, AddStudent, AddpresentEm, EmPresentinMonth, EmployAdd, Payments, addworkerCategory, attendsheetEm, attendsheetstudent, download, emdetails, getEmployee, getworkercategory, insetPayDetails, paymentDetails } from "../controllers/admin-Controller.js";
+import { AddPresent, AddStudent, AddpresentEm, EmPresentinMonth, EmployAdd, Payments, addworkerCategory, allnotifications, attendsheetEm, attendsheetstudent, deleteNoti, download, emdetails, getEmployee, getworkercategory, insetPayDetails, patmentDetailsforem, paymentDetails, postnotification } from "../controllers/admin-Controller.js";
 
 const router = express.Router();
 
@@ -20,5 +20,9 @@ router.post("/addpresentEm/:name/:position/:present/:formattedDate/:month/:year"
 router.post("/createpayment",Payments);
 router.post("/insertpay",insetPayDetails);
 router.get("/getpaydetail/:paymentdetailYear",paymentDetails);
-router.get('/emdetails/:email',emdetails)
+router.get('/emdetails/:email',emdetails);
+router.get("/paydetailsem/:year/:name",patmentDetailsforem);
+router.post("/postnotification",postnotification);
+router.get('/notifications',allnotifications);
+router.delete("/deletenotification/:data",deleteNoti)
 export {router as adminRouter};

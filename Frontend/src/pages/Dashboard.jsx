@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { PiStudentFill } from "react-icons/pi";
@@ -19,7 +19,8 @@ const Dashboard = () => {
     toast.success("Log Out Successfully");
     navigate("/");
   };
-
+  const [showbtn,setShowbtn] =  useState(true);
+console.log("hey brother ",showbtn)
   return (
     <div className="container-fluid">
       <div className="row flex-nowrap">
@@ -68,7 +69,8 @@ const Dashboard = () => {
                   to="/dashboard/accounts"
                   className="nav-link px-0 align-middle text-white"
                 >
-                  <i className="fs-4 bi-people ms-2"></i>
+                  <i class="bi fs-4 ms-2 bi-wallet2"></i>
+                 
                   <span className="ms-1 d-none d-sm-inline">
                     Account's
                   </span>
@@ -113,6 +115,19 @@ const Dashboard = () => {
                     <PiStudentFill className="fs-4 ms-2" />
                     <span className="ms-1 d-none d-sm-inline">
                       Manage Students
+                    </span>
+                  </Link>
+                </li>
+              )}
+            {user.role == "admin" && (
+                <li className="w-100">
+                  <Link
+                    to="/dashboard/notifications"
+                    className="nav-link px-0 align-middle text-white"
+                  >
+                    <i class="bi fs-4 ms-2 bi-bell-fill"></i>
+                    <span className="ms-1 d-none d-sm-inline">
+                      Manage Notifications
                     </span>
                   </Link>
                 </li>
@@ -162,7 +177,7 @@ const Dashboard = () => {
                   </Link>
                 </li>
               )}
-
+           
               <li className="w-100" onClick={handleLogOut}>
                 <Link
                   onClick={() => handleLogOut()}
@@ -182,7 +197,16 @@ const Dashboard = () => {
           <div className="p-2 d-flex justify-content-center shadow">
             <h4>Emoployee Management System</h4>
           </div>
-          <Outlet />
+         {
+           user.role === "student" && showbtn && (
+            <button onClick={()=>{
+              setShowbtn(false)
+              navigate("/dashboard");
+              
+            }} class="btn m-5 btn-warning">Going To Dashboard</button>
+          )
+         }
+         <Outlet />
         </div>
       </div>
     </div>
