@@ -144,10 +144,21 @@ console.log("hey brother ",showbtn)
                   </Link>
                 </li>
               )}
+                 {user.role == "teacher" && (
+                <li className="w-100">
+                  <Link
+                    to="/dashboard/notifications"
+                    className="nav-link px-0 align-middle text-white"
+                  >
+                    <i className="fs-4 bi-columns ms-2"></i>
+                    <span className="ms-1 d-none d-sm-inline">Notifications</span>
+                  </Link>
+                </li>
+              )}
               {user.role == "student" && (
                 <li className="w-100">
                   <Link
-                    to="/dashboard/category"
+                    to="/dashboard/notifications"
                     className="nav-link px-0 align-middle text-white"
                   >
                     <i className="fs-4 bi-columns ms-2"></i>
@@ -197,15 +208,15 @@ console.log("hey brother ",showbtn)
           <div className="p-2 d-flex justify-content-center shadow">
             <h4>Emoployee Management System</h4>
           </div>
-         {
-           user.role === "student" && showbtn && (
+         {/* {
+           user.role === "teacher" && showbtn && (
             <button onClick={()=>{
               setShowbtn(false)
               navigate("/dashboard");
               
             }} class="btn m-5 btn-warning">Going To Dashboard</button>
           )
-         }
+         } */}
          <Outlet />
         </div>
       </div>

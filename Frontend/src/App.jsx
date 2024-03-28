@@ -36,6 +36,8 @@ import Success from "./pages/Success";
 import Cancle from "./pages/Cancle";
 import BasicInfo from "./pages/BasicInfo";
 import Notification from "./components/notifications/Notification";
+import Notifications from "./components/notifications/Notifications";
+import Notificationsfort from "./components/notifications/Notificationsfort"
 const App = () => {
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
@@ -58,9 +60,22 @@ const App = () => {
             </PrivateRoute>
           }
         >
+       
+       {
+        user && user.role == "student" ? (
+          <Route  path="/dashboard/notifications" element={<Notifications />} />
+        ):null
+       }
+
+
           {user && user.role == "teacher" ? (
+      <>
         <Route path="/dashboard" element={<BasicInfo />} />
+        <Route  path="/dashboard/notifications" element={<Notificationsfort />} />
+      </>
       ) : null}
+
+
           {user && user.role == "admin" ? (
             <>
               <Route path="/dashboard" element={<Home />} />

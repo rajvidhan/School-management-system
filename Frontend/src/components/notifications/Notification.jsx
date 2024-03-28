@@ -96,7 +96,7 @@ const handleDelete = async(data)=>{
                 For
               </option>
               <option value="student">Student</option>
-              <option value="employee">Employee</option>
+              <option value="teacher">Teacher</option>
               <option value="both">Both</option>
             </select>
             <div class="form-group m-3">

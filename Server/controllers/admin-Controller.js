@@ -2,6 +2,10 @@ import connection from "../utils/dbConnection.js";
 
 import bcrypt from "bcrypt";
 
+// import PDFDocument from "pdfkit"; //for pdf exporr
+import puppeteer from "puppeteer";
+import pdfTemplate from "../documents/index.js";
+
 import XLSX from "xlsx"; // For Excel export
 import stripeLib from "stripe";
 // Set up Stripe
@@ -472,4 +476,51 @@ export const deleteNoti = async (req, res) => {
       });
     }
   });
+};
+export const notificationsfor = async (req, res) => {
+  const role = req.params.role;
+
+  const sql = `select * from urgentnotifications where forwho = ? or forwho = "both"`;
+  connection.query(sql, [role], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      return res.json({
+        data: result,
+        message: "success",
+        success: true,
+      });
+    }
+  });
+};
+
+export const pdfdownload = async (req, res) => {
+  const pdfContent = req.body; // PDF content to be generated
+
+  try {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.setContent(pdfTemplate(pdfContent)); // Set content for PDF
+    const pdfBuffer = await page.pdf(); // Generate PDF as buffer
+    await browser.close();
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": 'attachment; filename="generated-pdf.pdf"',
+    });
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    res.status(500).send("Error generating PDF");
+  }
+
+  // try {
+  //   const pdfBuffer = await convertHTMLToPDF(pdfTemplate(req.body),{});
+  //   res.setHeader('Content-Disposition', 'attachment; filename=result.pdf');
+  //   res.setHeader('Content-Type', 'application/pdf');
+  //   res.send(pdfBuffer);
+  // } catch (error) {
+  //   console.error('Error generating PDF:', error);
+  //   res.status(500).send("Error generating PDF");
+  // }
 };
