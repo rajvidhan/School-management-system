@@ -155,6 +155,17 @@ console.log("hey brother ",showbtn)
                   </Link>
                 </li>
               )}
+                    {user.role == "teacher" && (
+                <li className="w-100">
+                  <Link
+                    to="/dashboard"
+                    className="nav-link px-0 align-middle text-white"
+                  >
+                    <i className="fs-4 bi-columns ms-2"></i>
+                    <span className="ms-1 d-none d-sm-inline">Dashboard</span>
+                  </Link>
+                </li>
+              )}
               {user.role == "student" && (
                 <li className="w-100">
                   <Link

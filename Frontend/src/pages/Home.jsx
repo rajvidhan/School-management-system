@@ -2,13 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { useSelector } from "react-redux";
+import { AdminChart } from "./AdminChart";
 const Home = () => {
-
-  const {token} = useSelector((state)=>state.auth)
-  const {user} = useSelector((state)=>state.profile)
-
-
-
+  const { token } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.profile);
 
   const [adminCount, settotalAdmin] = useState(0);
   const [EmployeeCount, setEmployeeCount] = useState(0);
@@ -56,41 +53,36 @@ const Home = () => {
   return (
     <div>
       <div className="p-3 d-flex  justify-content-evenly mt-3">
-                    
-      <div class="card text-white bg-dark mb-3">
-        <div class="card-header">Admin's</div>
-        <div class="card-body text-dark">
-          <h5 class="card-title text-white">Total</h5>
-          <h4 class="text-white">{adminCount}</h4>
+        <div class="card text-white bg-dark mb-3">
+          <div class="card-header">Admin's</div>
+          <div class="card-body text-dark">
+            <h5 class="card-title text-white">Total</h5>
+            <h4 class="text-white">{adminCount}</h4>
+          </div>
         </div>
-      </div>
         <div class="card text-white bg-info mb-3">
-        <div class=" text-white card-header">Teachers</div>
-        <div class=" text-white card-body text-dark">
-          <h5 class="card-title">Total</h5>
-          <h4>{EmployeeCount}</h4>
+          <div class=" text-white card-header">Employee</div>
+          <div class=" text-white card-body text-dark">
+            <h5 class="card-title">Total</h5>
+            <h4>{EmployeeCount}</h4>
+          </div>
         </div>
-      </div>
-      
-        
-        <div class="card text-white bg-danger mb-3">
-        <div class=" text-white card-header">Salary</div>
-        <div class=" text-white card-body text-dark">
-          <h5 class="card-title text-white">Total</h5>
-          <h4 class="text-white">{salaryCount}</h4>
-        </div>
-      </div>
-      
-        
-      <div class="card text-white bg-success mb-3">
-        <div class="card-header text-white">Student's</div>
-        <div class="card-body text-white text-dark">
-          <h5 class="card-title">Total</h5>
-          <h4>{student.length}</h4>
-        </div>
-      </div>
 
-      
+        <div class="card text-white bg-danger mb-3">
+          <div class=" text-white card-header">Salary</div>
+          <div class=" text-white card-body text-dark">
+            <h5 class="card-title text-white">Total</h5>
+            <h4 class="text-white">{salaryCount}</h4>
+          </div>
+        </div>
+
+        <div class="card text-white bg-success mb-3">
+          <div class="card-header text-white">Student's</div>
+          <div class="card-body text-white text-dark">
+            <h5 class="card-title">Total</h5>
+            <h4>{student.length}</h4>
+          </div>
+        </div>
       </div>
 
       <div className="mt-4 px-5 pt-3">
@@ -111,21 +103,17 @@ const Home = () => {
         </table>
       </div>
 
+      <AdminChart employees={Employes} />
 
-
-
-
-
-
-      
       <div className="mt-4 px-5 pt-3">
-        <h3>List of Teacher's</h3>
+        <h3>List of Employees</h3>
         <table class="table table-light table-hover">
           <thead>
             <tr>
               <th>Image</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Position</th>
               <th>Salary</th>
             </tr>
           </thead>
@@ -137,6 +125,7 @@ const Home = () => {
                 </td>
                 <td>{e.name}</td>
                 <td>{e.email}</td>
+                <td>{e.position}</td>
                 <td>{e.salary}</td>
               </tr>
             ))}
