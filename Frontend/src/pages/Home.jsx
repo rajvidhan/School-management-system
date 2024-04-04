@@ -53,6 +53,7 @@ const Home = () => {
   return (
     <div>
       <div className="p-3 d-flex  justify-content-evenly mt-3">
+      <AdminChart employees={Employes} />
         <div class="card text-white bg-dark mb-3">
           <div class="card-header">Admin's</div>
           <div class="card-body text-dark">
@@ -103,7 +104,7 @@ const Home = () => {
         </table>
       </div>
 
-      <AdminChart employees={Employes} />
+     
 
       <div className="mt-4 px-5 pt-3">
         <h3>List of Employees</h3>

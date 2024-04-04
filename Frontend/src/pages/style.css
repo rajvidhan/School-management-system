@@ -80,3 +80,13 @@ ul li :hover {
    
   
   }
+
+  .chart{
+    display:flex;
+    align-items: center;
+    justify-items: center;
+    margin-left: 100px;
+    margin-right: 100px;
+    width:400px;
+    height:400px; 
+  }

@@ -1,43 +1,78 @@
-import React from "react";
-import {
-  Chart as ChartJS,
-  LinearScale,
-  CategoryScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Legend,
-  Tooltip,
-  LineController,
-  BarController,
-} from "chart.js";
-import { Chart } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
+import axios from "axios";
 
-ChartJS.register(
-  LinearScale,
-  CategoryScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Legend,
-  Tooltip,
-  LineController,
-  BarController
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
+// step :1 register the all elements
 
-export function AdminChart({employees}) {
-  const labels = ["January", "February", "March", "April", "May", "June", "July"];
+export function AdminChart() {
+  // function to generate random colorss
+  const randomColors = (numColors) => {
+    const colors = [];
 
+    for (let i = 0; i < numColors; i++) {
+      const color = `rgb(${Math.floor(Math.random() * 256)},${Math.floor(
+        Math.random() * 256
+      )},${Math.floor(Math.random() * 256)})`;
+      colors.push(color);
+    }
+    return colors;
+  };
+
+  // step 2: create the data
+
+  const [salaryData, setsalaryData] = useState(null);
+  const fetchdata = async () => {
+    await axios
+      .get("http://localhost:3000/admin/salarydetails")
+      .then((result) => {
+        setsalaryData(result.data.data);
+      });
+  };
+  useEffect(() => {
+    fetchdata();
+  }, []);
+  console.log("hello bhai", salaryData);
   const data = {
-  labels: employees.map((course) => course.name),
-  datasets: [
-    {
-      data: employees.map((course) => course.gender),
-     
-    },
-  ],
-};
+    labels: salaryData && salaryData.map((d) => d.month),
+    datasets: [
+      {
+        data: salaryData && salaryData.map((s) => s.howmuch),
+        backgroundColor: randomColors(salaryData && salaryData.length),
+      },
+    ],
+  };
 
-  return <Chart type="bar" data={data} />;
+  // // step 3 options for chart
+  const options = {
+    maintainAspectRatio: false,
+    width: 500,
+    height: 500,
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          color: "white", // change legend font color
+          font: {
+            size: "14",
+            family: "Arial, sans-serif",
+          },
+        },
+      },
+    },
+  };
+
+  return <>
+    <div>
+
+    <div
+     className="chart"
+     >
+          <Pie data={data} options={options} />
+      </div>
+    </div>
+ 
+  </>;
 }

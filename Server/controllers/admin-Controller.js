@@ -101,6 +101,14 @@ export const AddStudent = async (req, res) => {
     (name,MotherName,admissiondate,previousschool,FatherName,FatherContact,MotherContact,email,class,PrevScore,address,image)
     VALUES (?)`;
 
+
+  
+
+
+
+
+
+
   const Values = [
     req.body.name,
     req.body.Mothername,
@@ -524,3 +532,19 @@ export const pdfdownload = async (req, res) => {
   //   res.status(500).send("Error generating PDF");
   // }
 };
+
+export const getsalaryDetails = async (req,res)=>{
+  const sql = `SELECT * FROM salarydetails ORDER BY salaryholder ASC`
+
+  connection.query(sql,null,(err,result)=>{
+    if(err){
+      console.log(err)
+    }else{
+      return res.json({
+        data:result,
+        msg:"successfully fetch",
+        success:true
+      })
+    }
+  })
+}
