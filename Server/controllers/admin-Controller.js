@@ -97,18 +97,6 @@ export const EmployAdd = (req, res) => {
 };
 
 export const AddStudent = async (req, res) => {
-  const sql = `INSERT INTO students 
-    (name,MotherName,admissiondate,previousschool,FatherName,FatherContact,MotherContact,email,class,PrevScore,address,image)
-    VALUES (?)`;
-
-
-  
-
-
-
-
-
-
   const Values = [
     req.body.name,
     req.body.Mothername,
@@ -123,20 +111,45 @@ export const AddStudent = async (req, res) => {
     req.body.address,
     req.body.image,
   ];
-  console.log(Values);
-
-  connection.query(sql, [Values], (err, result) => {
+  const sql1 = `SELECT totalStudents from classes where name = ?`;
+  connection.query(sql1, [req.body.class], (err, result1) => {
     if (err) {
       console.log(err);
-      return res.json({
-        message: "failed",
-        success: false,
-      });
     } else {
-      return res.json({
-        message: "true",
-        success: true,
-      });
+      console.log(result1[0].totalStudents);
+
+      const sql2 = `UPDATE classes
+  SET totalStudents = ?
+  WHERE name = ?;
+  `;
+      connection.query(
+        sql2,
+        [result1[0].totalStudents + 1, req.body.class],
+        (err, result) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(result);
+            const sql3 = `INSERT INTO students 
+    (name,MotherName,admissiondate,previousschool,FatherName,FatherContact,MotherContact,email,class,PrevScore,address,image)
+    VALUES (?)`;
+            connection.query(sql3, [Values], (err, result) => {
+              if (err) {
+                console.log(err);
+                return res.json({
+                  message: "failed",
+                  success: false,
+                });
+              } else {
+                return res.json({
+                  message: "true",
+                  success: true,
+                });
+              }
+            });
+          }
+        }
+      );
     }
   });
 };
@@ -505,6 +518,7 @@ export const notificationsfor = async (req, res) => {
 export const pdfdownload = async (req, res) => {
   const pdfContent = req.body; // PDF content to be generated
 
+
   try {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -533,18 +547,50 @@ export const pdfdownload = async (req, res) => {
   // }
 };
 
-export const getsalaryDetails = async (req,res)=>{
-  const sql = `SELECT * FROM salarydetails ORDER BY salaryholder ASC`
+export const getsalaryDetails = async (req, res) => {
+  const sql = `SELECT * FROM salarydetails ORDER BY salaryholder ASC`;
 
-  connection.query(sql,null,(err,result)=>{
-    if(err){
-      console.log(err)
-    }else{
+  connection.query(sql, null, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
       return res.json({
-        data:result,
-        msg:"successfully fetch",
-        success:true
-      })
+        data: result,
+        msg: "successfully fetch",
+        success: true,
+      });
     }
-  })
+  });
+};
+
+export const studentDataforfee = async (req,res)=>{
+
+
+const year = req.params.year;
+const emailid = req.params.email;
+const date1 = `${year}-01-01`;
+const date2 = `${year}-12-31`;
+
+const sql = `select s.name,s.class,s.image,c.fee
+from students s
+join classes c on s.class = c.name
+where s.email = ? and s.admissiondate between ? and ?`
+
+
+
+
+connection.query(sql,[emailid,date1,date2],(err,result)=>{
+  if(err){
+    console.log(err)
+  }else{
+   return res.json({
+    data:result,
+    message:"Successfull",
+    success:true
+   })
+  }
+})
+
+
+
 }

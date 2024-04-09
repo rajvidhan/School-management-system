@@ -2,10 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import {saveAs} from "file-saver"
+
 const Notifications = () => {
+
+
   const [notifications, setNotifications] = useState([]);
   const { user } = useSelector((state) => state.profile);
+
   useEffect(() => {
     const fetchData = async () => {
       await axios
@@ -17,6 +20,7 @@ const Notifications = () => {
     fetchData();
   }, []);
 
+  
   const [pdfdata,setpdfData] = useState({
     subject:"",
     description:"",

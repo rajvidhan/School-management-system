@@ -23,24 +23,22 @@ export function AdminChart() {
 
   // step 2: create the data
 
-  const [salaryData, setsalaryData] = useState(null);
+  const [classData, setClassData] = useState(null);
   const fetchdata = async () => {
-    await axios
-      .get("http://localhost:3000/admin/salarydetails")
-      .then((result) => {
-        setsalaryData(result.data.data);
-      });
+    await axios.get("http://localhost:3000/auth/All_classes").then((result) => {
+      setClassData(result.data.data);
+    });
   };
   useEffect(() => {
     fetchdata();
   }, []);
-  console.log("hello bhai", salaryData);
+
   const data = {
-    labels: salaryData && salaryData.map((d) => d.month),
+    labels: classData && classData.map((d) => d.name),
     datasets: [
       {
-        data: salaryData && salaryData.map((s) => s.howmuch),
-        backgroundColor: randomColors(salaryData && salaryData.length),
+        data: classData && classData.map((c) => c.totalStudents),
+        backgroundColor: randomColors(classData && classData.length),
       },
     ],
   };
@@ -64,15 +62,13 @@ export function AdminChart() {
     },
   };
 
-  return <>
-    <div>
-
-    <div
-     className="chart"
-     >
+  return (
+    <>
+      <div>
+        <div className="chart">
           <Pie data={data} options={options} />
+        </div>
       </div>
-    </div>
- 
-  </>;
+    </>
+  );
 }

@@ -142,12 +142,11 @@ const Account = () => {
     await axios
       .get(`http://localhost:3000/admin/getpaydetail/${paymentdetailYear}`)
       .then((result) => {
-       
         setPaymentDetails(result.data.data);
       });
   };
 
-  console.log(paymentDetails);
+  
   return (
     <div>
       <div class="card">
@@ -159,7 +158,12 @@ const Account = () => {
             </Link>
           </li>
           <li class="list-group-item">
-            <Link class="btn btn-light">Student</Link>
+            <Link
+             to={"/dashboard/studentAccounts"}
+              class="btn btn-light"
+            >
+              Student
+            </Link>
           </li>
         </ul>
         {employee && (
@@ -282,6 +286,9 @@ const Account = () => {
             </div>
           </>
         )}
+
+       
+       
       </div>
       {!employee && (
         <div class="card mt-5">
@@ -302,15 +309,16 @@ const Account = () => {
                 );
               })}
             </select>
-            <button onClick={(e)=>fetchdata(e)} class="btn btn-warning">Search</button>
+            <button onClick={(e) => fetchdata(e)} class="btn btn-warning">
+              Search
+            </button>
           </div>
           <ul class="list-group list-group-flush">
-            {paymentDetails.length>0 && (
+            {paymentDetails.length > 0 && (
               <>
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                    
                       <th scope="col">Director</th>
                       <th scope="col">Name</th>
                       <th scope="col">Email</th>
@@ -326,7 +334,6 @@ const Account = () => {
                   <tbody>
                     {paymentDetails.map((d, i) => (
                       <tr key={i}>
-                    
                         <td>{d.salarygivenby}</td>
                         <td>{d.salaryholder}</td>
                         <td>{d.salaryholderemail}</td>

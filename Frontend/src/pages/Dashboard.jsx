@@ -19,8 +19,8 @@ const Dashboard = () => {
     toast.success("Log Out Successfully");
     navigate("/");
   };
-  const [showbtn,setShowbtn] =  useState(true);
-console.log("hey brother ",showbtn)
+  const [showbtn, setShowbtn] = useState(true);
+  console.log("hey brother ", showbtn);
   return (
     <div className="container-fluid">
       <div className="row flex-nowrap">
@@ -40,72 +40,70 @@ console.log("hey brother ",showbtn)
               id="menu"
             >
               {user.role == "admin" && (
-                   <li className="w-100">
-                   <Link
-                     to="/dashboard"
-                     className="nav-link text-white px-0 align-middle"
-                   >
-                     <i className="fs-4 bi-speedometer2 ms-2"></i>
-                     <span className="ms-1 d-none d-sm-inline">Dashboard</span>
-                   </Link>
-                 </li>
+                <li className="w-100">
+                  <Link
+                    to="/dashboard"
+                    className="nav-link text-white px-0 align-middle"
+                  >
+                    <i className="fs-4 bi-speedometer2 ms-2"></i>
+                    <span className="ms-1 d-none d-sm-inline">Dashboard</span>
+                  </Link>
+                </li>
               )}
               {user.role == "admin" && (
                 <li className="w-100">
-                <Link
-                  to="/dashboard/worker-category"
-                  className="nav-link px-0 align-middle text-white"
-                >
-                  <i className="fs-4 bi-people ms-2"></i>
-                  <span className="ms-1 d-none d-sm-inline">
-                    Worker category
-                  </span>
-                </Link>
-              </li>
+                  <Link
+                    to="/dashboard/worker-category"
+                    className="nav-link px-0 align-middle text-white"
+                  >
+                    <i className="fs-4 bi-people ms-2"></i>
+                    <span className="ms-1 d-none d-sm-inline">
+                      Worker category
+                    </span>
+                  </Link>
+                </li>
               )}
-               {user.role == "admin" && (
-                <li className="w-100">
-                <Link
-                  to="/dashboard/accounts"
-                  className="nav-link px-0 align-middle text-white"
-                >
-                  <i class="bi fs-4 ms-2 bi-wallet2"></i>
-                 
-                  <span className="ms-1 d-none d-sm-inline">
-                    Account's
-                  </span>
-                </Link>
-              </li>
-              )}
-           
               {user.role == "admin" && (
                 <li className="w-100">
-                <Link
-                  to="/dashboard/employee"
-                  className="nav-link px-0 align-middle text-white"
-                >
-                  <i className="fs-4 bi-people ms-2"></i>
-                  <span className="ms-1 d-none d-sm-inline">
-                    Manage Employee
-                  </span>
-                </Link>
-              </li>
+                  <Link
+                    to="/dashboard/accounts"
+                    className="nav-link px-0 align-middle text-white"
+                  >
+                    <i class="bi fs-4 ms-2 bi-wallet2"></i>
+
+                    <span className="ms-1 d-none d-sm-inline">Account's</span>
+                  </Link>
+                </li>
               )}
-              
+
               {user.role == "admin" && (
                 <li className="w-100">
-                <Link
-                  to="/dashboard/classes"
-                  className="nav-link px-0 align-middle text-white"
-                >
-                  <SiGoogleclassroom className="fs-4 ms-2" />
-                  <span className="ms-1 d-none d-sm-inline">
-                    Manage Classes
-                  </span>
-                </Link>
-              </li>
+                  <Link
+                    to="/dashboard/employee"
+                    className="nav-link px-0 align-middle text-white"
+                  >
+                    <i className="fs-4 bi-people ms-2"></i>
+                    <span className="ms-1 d-none d-sm-inline">
+                      Manage Employee
+                    </span>
+                  </Link>
+                </li>
               )}
-              
+
+              {user.role == "admin" && (
+                <li className="w-100">
+                  <Link
+                    to="/dashboard/classes"
+                    className="nav-link px-0 align-middle text-white"
+                  >
+                    <SiGoogleclassroom className="fs-4 ms-2" />
+                    <span className="ms-1 d-none d-sm-inline">
+                      Manage Classes
+                    </span>
+                  </Link>
+                </li>
+              )}
+
               {user.role == "admin" && (
                 <li className="w-100">
                   <Link
@@ -119,7 +117,7 @@ console.log("hey brother ",showbtn)
                   </Link>
                 </li>
               )}
-            {user.role == "admin" && (
+              {user.role == "admin" && (
                 <li className="w-100">
                   <Link
                     to="/dashboard/notifications"
@@ -144,18 +142,20 @@ console.log("hey brother ",showbtn)
                   </Link>
                 </li>
               )}
-                 {user.role == "teacher" && (
+              {user.role == "teacher" && (
                 <li className="w-100">
                   <Link
                     to="/dashboard/notifications"
                     className="nav-link px-0 align-middle text-white"
                   >
                     <i className="fs-4 bi-columns ms-2"></i>
-                    <span className="ms-1 d-none d-sm-inline">Notifications</span>
+                    <span className="ms-1 d-none d-sm-inline">
+                      Notifications
+                    </span>
                   </Link>
                 </li>
               )}
-                    {user.role == "teacher" && (
+              {user.role == "teacher" && (
                 <li className="w-100">
                   <Link
                     to="/dashboard"
@@ -172,8 +172,10 @@ console.log("hey brother ",showbtn)
                     to="/dashboard/notifications"
                     className="nav-link px-0 align-middle text-white"
                   >
-                    <i className="fs-4 bi-columns ms-2"></i>
-                    <span className="ms-1 d-none d-sm-inline">Notifications</span>
+                   <i class="bi fs-4 bi-bell-fill"></i>
+                    <span className="ms-1 d-none d-sm-inline">
+                      Notifications
+                    </span>
                   </Link>
                 </li>
               )}
@@ -183,7 +185,7 @@ console.log("hey brother ",showbtn)
                     to="/dashboard/category"
                     className="nav-link px-0 align-middle text-white"
                   >
-                    <i className="fs-4 bi-columns ms-2"></i>
+               <i class="bi  fs-4 bi-file-earmark"></i>
                     <span className="ms-1 d-none d-sm-inline">Report Card</span>
                   </Link>
                 </li>
@@ -191,15 +193,17 @@ console.log("hey brother ",showbtn)
               {user.role == "student" && (
                 <li className="w-100">
                   <Link
-                    to="/dashboard/category"
+                    to="/dashboard/fee"
                     className="nav-link px-0 align-middle text-white"
                   >
-                    <i className="fs-4 bi-columns ms-2"></i>
-                    <span className="ms-1 d-none d-sm-inline">Fee Submission</span>
+                   <i class="bi fs-4 bi-currency-rupee"></i>
+                    <span className="ms-1 d-none d-sm-inline">
+                      Fee Submission
+                    </span>
                   </Link>
                 </li>
               )}
-           
+
               <li className="w-100" onClick={handleLogOut}>
                 <Link
                   onClick={() => handleLogOut()}
@@ -219,7 +223,7 @@ console.log("hey brother ",showbtn)
           <div className="p-2 d-flex justify-content-center shadow">
             <h4>Emoployee Management System</h4>
           </div>
-         {/* {
+          {/* {
            user.role === "teacher" && showbtn && (
             <button onClick={()=>{
               setShowbtn(false)
@@ -228,7 +232,7 @@ console.log("hey brother ",showbtn)
             }} class="btn m-5 btn-warning">Going To Dashboard</button>
           )
          } */}
-         <Outlet />
+          <Outlet />
         </div>
       </div>
     </div>

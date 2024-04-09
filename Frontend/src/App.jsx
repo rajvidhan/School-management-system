@@ -38,6 +38,8 @@ import BasicInfo from "./pages/BasicInfo";
 import Notification from "./components/notifications/Notification";
 import Notifications from "./components/notifications/Notifications";
 import Notificationsfort from "./components/notifications/Notificationsfort"
+import StudentAccount from "./pages/StudentAccount";
+import FeeSubmission from "./components/Students/FeeSubmission";
 const App = () => {
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
@@ -63,7 +65,11 @@ const App = () => {
        
        {
         user && user.role == "student" ? (
+         <>
           <Route  path="/dashboard/notifications" element={<Notifications />} />
+          <Route  path="/dashboard/fee" element={<FeeSubmission />} />
+         </>
+
         ):null
        }
 
@@ -85,7 +91,7 @@ const App = () => {
               <Route path="/dashboard/add-class" element={<AddClasses />} />
               <Route path="/dashboard/classes" element={<Class />} />
               <Route path="/dashboard/edit_class/:id" element={<EditClass />} />
-
+              <Route  path="/dashboard/studentAccounts" element={<StudentAccount />} />
               <Route
                 path="/dashboard/studenAttendance/:classname/:studentname"
                 element={<Studentsattend />}
