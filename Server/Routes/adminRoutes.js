@@ -1,5 +1,5 @@
 import express from "express"
-import { AddPresent, AddStudent, AddpresentEm, EmPresentinMonth, EmployAdd, Payments, addworkerCategory, allnotifications, attendsheetEm, attendsheetstudent, deleteNoti, download, emdetails, getEmployee, getsalaryDetails, getworkercategory, insetPayDetails, notificationsfor, patmentDetailsforem, paymentDetails, pdfdownload, postnotification, studentDataforfee } from "../controllers/admin-Controller.js";
+import { AddPresent, AddStudent, AddpresentEm, EmPresentinMonth, EmployAdd, Payments, StudentFeeDetails, addworkerCategory, allnotifications, attendsheetEm, attendsheetstudent, checkfeeSubmit, deleteNoti, download, emdetails, getEmployee, getsalaryDetails, getworkercategory, insetPayDetails, notificationsfor, patmentDetailsforem, paymentDetails, pdfdownload, postnotification, studentDataforfee } from "../controllers/admin-Controller.js";
 
 const router = express.Router();
 
@@ -17,8 +17,14 @@ router.get("/employee/:name",getEmployee);
 router.get("/EmPresentinMonth/:month/:year/:name/:salary",EmPresentinMonth)
 router.post("/addpresent/:className/:studentid/:presentValue/:date",AddPresent)
 router.post("/addpresentEm/:name/:position/:present/:formattedDate/:month/:year",AddpresentEm);
+
+// for payments 
 router.post("/createpayment",Payments);
 router.post("/insertpay",insetPayDetails);
+router.post("/insertfeedetails",StudentFeeDetails)
+
+router.post("/chefeeSubmit",checkfeeSubmit)
+
 router.get("/getpaydetail/:paymentdetailYear",paymentDetails);
 router.get('/emdetails/:email',emdetails);
 router.get("/paydetailsem/:year/:name",patmentDetailsforem);

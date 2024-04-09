@@ -336,13 +336,14 @@ export const Payments = async (req, res) => {
       country: "US", // ISO 3166-1 alpha-2 country code
     },
   });
-  const payment = req.body.payment;
+  const payment  = req.body.payment;
+
   const lineItems = [
     {
       price_data: {
         currency: "inr",
         product_data: {
-          name: "Lochan",
+          name: "Money",
         },
         unit_amount: payment * 100,
       },
@@ -354,7 +355,7 @@ export const Payments = async (req, res) => {
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: "http://localhost:5173/dashboard/accounts",
+    success_url: "http://localhost:5173/success",
     cancel_url: "http://localhost:5173/cancle",
     billing_address_collection: "auto", // Require billing address from customer
     customer: customer.id, // Pass the customer name directly
@@ -393,6 +394,61 @@ VALUES (?)`;
     }
   });
 };
+
+export const StudentFeeDetails = async (req,res)=>{
+ const values = [
+  req.body.name,
+  req.body.howmuch,
+  req.body.class,
+  req.body.fixfee,
+  req.body.year,
+  req.body.date,
+  req.body.status
+ ]
+ 
+ const sql = `INSERT INTO studentfee
+ (name,howmuch,class,fixfee,year,date,status)
+ VALUES (?)`
+
+ connection.query(sql,[values],(err,result)=>{
+  if(err){
+    console.log(err)
+  }else{
+    return res.json({
+      data:result,
+      success:true,
+      message:"success"
+    })
+  }
+ })
+}
+
+export const checkfeeSubmit = async (req,res)=>{
+
+   const name =  req.body.name;
+    const year = req.body.year;
+    const Class = req.body.class
+
+ const sql = `select status from studentfee
+ where name = ? and year = ? and class = ?`;
+ connection.query(sql,[name,year,Class],((err,result)=>{
+  if(err){
+    console.log(err);
+    return res.json({
+      success:false
+    })
+  }else{
+    return res.json({
+      success:true,
+      message:"success",
+      data:result
+    })
+  }
+ }))
+}
+
+
+
 
 export const paymentDetails = async (req, res) => {
   const year = req.params.paymentdetailYear;

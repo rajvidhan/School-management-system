@@ -84,6 +84,7 @@ const Account = () => {
       });
   };
 
+  // paymemt function 
   const handlepayments = async (e) => {
     e.preventDefault();
 
