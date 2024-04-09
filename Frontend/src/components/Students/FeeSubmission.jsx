@@ -39,9 +39,7 @@ const FeeSubmission = () => {
       headers: headers,
       body: JSON.stringify(body),
     });
-    if (response.ok) {
-      toast.success("Payment Successfull");
-    }
+   
 
     const session = await response.json();
 
@@ -52,6 +50,8 @@ const FeeSubmission = () => {
     });
     if (result.error) {
       console.log(result.error);
+    }else{
+      toast.success("Payment Successfull");
     }
   };
 
