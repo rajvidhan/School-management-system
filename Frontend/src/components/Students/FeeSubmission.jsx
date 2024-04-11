@@ -21,7 +21,7 @@ const FeeSubmission = () => {
         });
     };
     fetch();
-  }, []);
+  },[])
 
   const makePayment = async () => {
     const stripe = await loadStripe(
@@ -39,7 +39,6 @@ const FeeSubmission = () => {
       headers: headers,
       body: JSON.stringify(body),
     });
-   
 
     const session = await response.json();
 
@@ -50,10 +49,8 @@ const FeeSubmission = () => {
     });
     if (result.error) {
       console.log(result.error);
-    }else{
-      toast.success("Payment Successfull");
     }
-  };
+  }
 
   const inserEntryiInDb = async () => {
     const formData = new FormData();
@@ -69,32 +66,63 @@ const FeeSubmission = () => {
       "http://localhost:3000/admin/insertfeedetails",
       formData
     );
-  };
-
-
-  const [pay,setpay] = useState(true);
-  const PayDoneOrNot = async ()=>{
-    const formData = new FormData();
-    formData.append("name", studentData.name);
-    formData.append("class", studentData.class);
-    formData.append("year", currentYear);
-     await axios.post(
-      "http://localhost:3000/admin/chefeeSubmit",
-      formData
-    ).then(
-      result=>{
-        console.log(result)
-        if(result.data.data.length == 0){
-          setpay(false)
-        }
-      }
-    )
-    
   }
-  useEffect(()=>{
-    PayDoneOrNot();
-  },[studentData])
 
+  const [pay, setpay] = useState(false);
+  const [recipt, setrecipt] = useState(null);
+  console.log("receipt data is ",recipt)
+  const PayDoneOrNot = async () => {
+    const formData = new FormData();
+    formData.append("name", studentData && studentData.name);
+    formData.append("class", studentData && studentData.class);
+    formData.append("year", currentYear);
+    await axios
+      .post("http://localhost:3000/admin/chefeeSubmit", formData)
+      .then((result)=>{
+        setrecipt(result.data.data[0]);
+        console.log("hello",result);
+        if(result.data.data[0]){
+          setpay(true);
+        }
+      });
+  }
+  useEffect(() => {
+    PayDoneOrNot()
+  }, [studentData])
+
+  const reciptDownload = async () => {
+    try {
+        let formData = new FormData();
+        formData.append("name",recipt.name)
+        formData.append("image",studentData.image)
+        formData.append("howmuch",recipt.howmuch)
+        formData.append("Class",recipt.class)
+        formData.append("fixfee",recipt.fixfee)
+        formData.append("status",recipt.status)
+        
+
+      // Sending PDF data to the server
+      const response = await axios.post(
+        "http://localhost:3000/admin/reciptDowload",
+        formData,
+        {
+          responseType: "blob",
+        }
+      );
+
+      // Creating a Blob object from the PDF data
+      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+
+      // Creating a URL for the Blob object
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Opening the PDF in a new tab for download
+      window.open(pdfUrl);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      // Handle error
+    }
+  };
   return (
     <div>
       {/* student info card  */}
@@ -116,19 +144,49 @@ const FeeSubmission = () => {
           </li>
         </ul>
         <div class="card-body">
-         {
-          pay ? (
-            <button onClick={() =>toast.success("Fee already submitted")} class="btn btn-success">
-            Fee Submitted
-          </button>
-           
-          ):(
+          {pay ? (
+          <button
+          onClick={() => toast.success("Fee already submitted")}
+          class="btn btn-success"
+        >
+          Fee Submitted
+        </button>
+          ) : (
             <button onClick={() => makePayment()} class="btn btn-warning">
             Submit Your Fee
           </button>
-          )
-         }
+            
+            
+          )}
         </div>
+        {recipt && (
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">NAME</th>
+                <th scope="col">CLASS</th>
+                <th scope="col">FEE</th>
+                <th scope="col">PAID AMOUNT</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">RECIPT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                
+                <td>{recipt.name}</td>
+                <td>{recipt.class}</td>
+                <td>{recipt.fixfee}</td>
+                <td>{recipt.howmuch}</td>
+                <td>{recipt.status}</td>
+                <td>
+                  <button onClick={()=>reciptDownload()}  class="btn btn-success">Download</button>
+                </td>
+                
+              </tr>           
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

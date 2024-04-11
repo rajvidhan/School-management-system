@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 // import PDFDocument from "pdfkit"; //for pdf exporr
 import puppeteer from "puppeteer";
 import pdfTemplate from "../documents/index.js";
+import pdfTemplate2 from "../documents/pdfTemplate2.js";
 
 import XLSX from "xlsx"; // For Excel export
 import stripeLib from "stripe";
@@ -361,7 +362,7 @@ export const Payments = async (req, res) => {
     customer: customer.id, // Pass the customer name directly
   });
 
-  return res.json({ id: session.id });
+  return res.json({ success:true,id: session.id });
 };
 
 export const insetPayDetails = async (req, res) => {
@@ -429,7 +430,7 @@ export const checkfeeSubmit = async (req,res)=>{
     const year = req.body.year;
     const Class = req.body.class
 
- const sql = `select status from studentfee
+ const sql = `select * from studentfee
  where name = ? and year = ? and class = ?`;
  connection.query(sql,[name,year,Class],((err,result)=>{
   if(err){
@@ -446,6 +447,58 @@ export const checkfeeSubmit = async (req,res)=>{
   }
  }))
 }
+export const FeesubData = async (req,res)=>{
+
+ 
+   const year = req.body.year;
+   const Class = req.body.class
+
+const sql = `select * from studentfee
+where year = ? and class = ?`;
+connection.query(sql,[year,Class],((err,result)=>{
+ if(err){
+   console.log(err);
+   return res.json({
+     success:false
+   })
+ }else{
+   return res.json({
+     success:true,
+     message:"success",
+     data:result
+   })
+ }
+}))
+}
+
+export const FeeNosubData = async (req,res)=>{
+
+ 
+  const year = req.body.year;
+  const Class = req.body.class
+
+const sql = `select students.name,students.email,students.FatherContact,students.class,classes.fee
+from students
+left join studentfee
+on students.name = studentfee.name
+join classes on students.class = classes.name
+where studentfee.name  is null and students.class = ? and students.admissiondate between "${year}-01-01" and "${year}-12-31";`;
+connection.query(sql,[Class],((err,result)=>{
+if(err){
+  console.log(err);
+  return res.json({
+    success:false
+  })
+}else{
+ 
+  return res.json({
+    success:true,
+    message:"success",
+    data:result
+  })
+}
+}))
+}
 
 
 
@@ -453,7 +506,7 @@ export const checkfeeSubmit = async (req,res)=>{
 export const paymentDetails = async (req, res) => {
   const year = req.params.paymentdetailYear;
 
-  const sql = `SELECT * FROM salarydetails WHERE year = ?`;
+  const sql = `SELECT * FROM salarydetails WHERE year = ? order by month asc`;
 
   connection.query(sql, [year], (err, result) => {
     if (err) {
@@ -591,17 +644,29 @@ export const pdfdownload = async (req, res) => {
     console.error("Error generating PDF:", error);
     res.status(500).send("Error generating PDF");
   }
-
-  // try {
-  //   const pdfBuffer = await convertHTMLToPDF(pdfTemplate(req.body),{});
-  //   res.setHeader('Content-Disposition', 'attachment; filename=result.pdf');
-  //   res.setHeader('Content-Type', 'application/pdf');
-  //   res.send(pdfBuffer);
-  // } catch (error) {
-  //   console.error('Error generating PDF:', error);
-  //   res.status(500).send("Error generating PDF");
-  // }
 };
+
+export const reciptDowload = async (req,res)=>{
+  const pdfContent = req.body; // PDF content to be generated
+
+console.log(pdfContent)
+  try {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.setContent(pdfTemplate2(pdfContent)); // Set content for PDF
+    const pdfBuffer = await page.pdf(); // Generate PDF as buffer
+    await browser.close();
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": 'attachment; filename="generated-pdf.pdf"',
+    });
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    res.status(500).send("Error generating PDF");
+  }
+}
 
 export const getsalaryDetails = async (req, res) => {
   const sql = `SELECT * FROM salarydetails ORDER BY salaryholder ASC`;
