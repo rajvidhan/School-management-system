@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+
 import { useSelector } from "react-redux";
 import { AdminChart } from "./AdminChart";
 const Home = () => {
@@ -50,8 +51,16 @@ const Home = () => {
     totalAdmin();
   }, []);
 
+
+
+
   return (
     <div>
+
+   
+
+
+
       <div className="p-3 d-flex  justify-content-evenly mt-3">
       <AdminChart employees={Employes} />
         <div class="card text-white bg-dark mb-3">
@@ -133,6 +142,9 @@ const Home = () => {
           </tbody>
         </table>
       </div>
+
+  
+      
     </div>
   );
 };

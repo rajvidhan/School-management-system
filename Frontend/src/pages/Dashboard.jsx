@@ -179,7 +179,7 @@ const Dashboard = () => {
                   </Link>
                 </li>
               )}
-              {user.role == "student" && (
+              {/* {user.role == "student" && (
                 <li className="w-100">
                   <Link
                     to="/dashboard/category"
@@ -189,7 +189,7 @@ const Dashboard = () => {
                     <span className="ms-1 d-none d-sm-inline">Report Card</span>
                   </Link>
                 </li>
-              )}
+              )} */}
               {user.role == "student" && (
                 <li className="w-100">
                   <Link
